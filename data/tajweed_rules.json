@@ -1,0 +1,92 @@
+{
+  "1:1": [
+    {
+      "type": "MADD",
+      "position": 0,
+      "letter": "ا",
+      "word": "بِسۡمِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "بسم میں مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli in Bismi - 2 harakaat"
+    },
+    {
+      "type": "GHUNNAH",
+      "position": 1,
+      "letter": "ن",
+      "word": "ٱلرَّحۡمَـٰنِ",
+      "description_ur": "الرحمن میں غنہ",
+      "description_en": "Ghunnah in Ar-Rahman"
+    }
+  ],
+  "1:2": [
+    {
+      "type": "MADD",
+      "position": 1,
+      "letter": "ا",
+      "word": "ٱلۡحَمۡدُ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الحمد میں مد اصلی",
+      "description_en": "Madd Asli in Al-Hamd"
+    },
+    {
+      "type": "GHUNNAH",
+      "position": 4,
+      "letter": "ن",
+      "word": "ٱلۡعَـٰلَمِینَ",
+      "description_ur": "العالمین میں غنہ",
+      "description_en": "Ghunnah in Al-Alameen"
+    }
+  ],
+  "112:1": [
+    {
+      "type": "QALQALAH",
+      "position": 0,
+      "letter": "ق",
+      "word": "قُلۡ",
+      "description_ur": "قل میں قلقلہ",
+      "description_en": "Qalqalah in Qul"
+    },
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ا",
+      "word": "ٱللَّهُ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "اللہ میں مد اصلی",
+      "description_en": "Madd Asli in Allah"
+    }
+  ],
+  "112:2": [
+    {
+      "type": "MADD",
+      "position": 0,
+      "letter": "ا",
+      "word": "ٱللَّهُ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "اللہ میں مد اصلی",
+      "description_en": "Madd Asli in Allah"
+    }
+  ],
+  "113:1": [
+    {
+      "type": "QALQALAH",
+      "position": 0,
+      "letter": "ق",
+      "word": "قُلۡ",
+      "description_ur": "قل میں قلقلہ",
+      "description_en": "Qalqalah in Qul"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 4,
+      "letter": "ق",
+      "word": "ٱلۡفَلَقِ",
+      "description_ur": "الفلق میں قلقلہ",
+      "description_en": "Qalqalah in Al-Falaq"
+    }
+  ]
+}
