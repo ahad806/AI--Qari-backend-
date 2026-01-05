@@ -1,10 +1,10 @@
 """
 Tajweed rule checking service (Rule-based Phase 1)
+Uses LibROSA for acoustic analysis (praat-parselmouth removed to avoid C++ build dependencies)
 """
 
 import librosa
 import numpy as np
-import parselmouth
 from scipy import signal
 from typing import List, Dict, Tuple, Optional
 from models.schemas import TajweedError
@@ -24,7 +24,7 @@ class TajweedChecker:
         self.sample_rate = SAMPLE_RATE
         self.thresholds = TAJWEED_THRESHOLDS
         
-        print("✅ Tajweed checker initialized")
+        print("✅ Tajweed checker initialized (using LibROSA)")
     
     def check_madd(
         self,
@@ -106,16 +106,13 @@ class TajweedChecker:
             Dictionary with error details or None if correct
         """
         try:
-            # Convert to Praat Sound object
-            sound = parselmouth.Sound(audio_segment, sampling_frequency=self.sample_rate)
-            intensity = sound.to_intensity()
-            
-            # Get intensity values
-            intensity_values = intensity.values[0]
+            # Use LibROSA for intensity analysis (replaces Praat)
+            # Calculate RMS energy as proxy for intensity
+            rms = librosa.feature.rms(y=audio_segment, frame_length=2048, hop_length=512)[0]
             
             # Calculate spike
-            max_intensity = np.max(intensity_values)
-            avg_intensity = np.mean(intensity_values)
+            max_intensity = np.max(rms)
+            avg_intensity = np.mean(rms)
             
             if avg_intensity > 0:
                 spike_ratio = (max_intensity - avg_intensity) / avg_intensity

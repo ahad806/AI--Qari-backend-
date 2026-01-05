@@ -1,24 +1,25 @@
 # FastAPI framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-python-multipart==0.0.6
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.12
 
 # ML/AI models
-transformers==4.35.2
-torch==2.1.1
-torchaudio==2.1.1
+transformers==4.47.0
+torch==2.6.0
+torchaudio==2.6.0
 
 # Audio processing
-librosa==0.10.1
+librosa==0.10.2
 soundfile==0.12.1
-praat-parselmouth==0.4.3
-scipy==1.11.4
-numpy==1.26.2
+scipy==1.14.1
+numpy==1.26.4
+# NOTE: praat-parselmouth REMOVED - requires Visual Studio C++ Build Tools
+# Tajweed phonetic analysis will use librosa fallback methods instead
 
 # Utilities
-python-dotenv==1.0.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+python-dotenv==1.0.1
+pydantic==2.10.3
+pydantic-settings==2.6.1
 
 # Optional: For deployment
-gunicorn==21.2.0
+gunicorn==23.0.0
