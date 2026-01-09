@@ -13,7 +13,7 @@ DATA_DIR = BASE_DIR / "data"
 AUDIO_DIR = DATA_DIR / "audio"
 
 # Model settings
-WAV2VEC2_MODEL = "jonatasgrosman/wav2vec2-large-xlsr-53-arabic"
+WHISPER_MODEL = "OdyAsh/faster-whisper-base-ar-quran"  # Quran-specific Whisper model
 SAMPLE_RATE = 16000
 
 # Tajweed thresholds (can be tuned based on Qari validation)

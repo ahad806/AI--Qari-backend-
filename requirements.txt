@@ -7,6 +7,8 @@ python-multipart==0.0.12
 transformers==4.47.0
 torch==2.6.0
 torchaudio==2.6.0
+faster-whisper==1.1.0  # Optimized Whisper for Quranic transcription
+pydub==0.25.1  # Audio format conversion
 
 # Audio processing
 librosa==0.10.2

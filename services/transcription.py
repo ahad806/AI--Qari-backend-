@@ -1,77 +1,118 @@
 """
-Speech transcription service using Wav2Vec2
+Speech transcription service using Faster-Whisper (Quran-specific model)
 """
 
-from transformers import Wav2Vec2Processor, Wav2Vec2ForCTC
+from faster_whisper import WhisperModel
 import torch
 import librosa
 import numpy as np
 from typing import Tuple, Dict
-from config import WAV2VEC2_MODEL, SAMPLE_RATE
+from config import WHISPER_MODEL, SAMPLE_RATE
+from pydub import AudioSegment
+import tempfile
+import os
 
 
 class TranscriptionService:
     """
-    Wav2Vec2-based Arabic speech transcription service
+    Faster-Whisper-based Arabic Quranic speech transcription service
+    Uses model fine-tuned specifically on Quranic recitation
     """
     
     def __init__(self):
         """
-        Initialize Wav2Vec2 model for Arabic transcription
+        Initialize Faster-Whisper model for Quranic transcription
         """
-        print(f"📥 Loading Wav2Vec2 model: {WAV2VEC2_MODEL}")
+        print(f"📥 Loading Faster-Whisper model: {WHISPER_MODEL}")
         
-        self.processor = Wav2Vec2Processor.from_pretrained(WAV2VEC2_MODEL)
-        self.model = Wav2Vec2ForCTC.from_pretrained(WAV2VEC2_MODEL)
+        # Determine device (GPU if available, otherwise CPU)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        compute_type = "float16" if device == "cuda" else "int8"
         
-        # Move to GPU if available
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model.to(self.device)
+        # Load the Faster-Whisper model
+        self.model = WhisperModel(
+            WHISPER_MODEL,
+            device=device,
+            compute_type=compute_type
+        )
         
-        print(f"✅ Model loaded successfully on {self.device}")
+        self.device = device
+        print(f"✅ Faster-Whisper model loaded successfully on {device}")
     
     def transcribe_audio(self, audio_path: str) -> Tuple[str, float]:
         """
-        Transcribe audio file to Arabic text
+        Transcribe audio file to Arabic text using Faster-Whisper
         
         Args:
-            audio_path: Path to audio file (.wav, .mp3)
+            audio_path: Path to audio file (.wav, .mp3, .m4a)
         
         Returns:
             Tuple of (transcription, confidence_score)
         """
         try:
-            # Load audio
-            audio, sr = librosa.load(audio_path, sr=SAMPLE_RATE)
+            # Convert audio to WAV format with 16kHz sample rate if needed
+            temp_wav_path = None
             
-            # Process audio
-            inputs = self.processor(
-                audio,
-                sampling_rate=SAMPLE_RATE,
-                return_tensors="pt",
-                padding=True
+            if not audio_path.endswith('.wav'):
+                # Convert to WAV using pydub
+                audio = AudioSegment.from_file(audio_path)
+                audio = audio.set_frame_rate(SAMPLE_RATE)
+                audio = audio.set_channels(1)  # Mono
+                
+                # Create temporary WAV file
+                temp_wav_path = tempfile.mktemp(suffix='.wav')
+                audio.export(temp_wav_path, format="wav")
+                process_path = temp_wav_path
+            else:
+                # Ensure 16kHz sample rate for WAV files
+                audio, sr = librosa.load(audio_path, sr=SAMPLE_RATE)
+                temp_wav_path = tempfile.mktemp(suffix='.wav')
+                import soundfile as sf
+                sf.write(temp_wav_path, audio, SAMPLE_RATE)
+                process_path = temp_wav_path
+            
+            # Transcribe using Faster-Whisper
+            segments, info = self.model.transcribe(
+                process_path,
+                language="ar",  # Arabic language
+                beam_size=5,    # Better accuracy
+                vad_filter=True,  # Voice Activity Detection
+                vad_parameters=dict(min_silence_duration_ms=500)
             )
             
-            # Move to device
-            inputs = {k: v.to(self.device) for k, v in inputs.items()}
+            # Collect transcription and calculate average confidence
+            transcription_parts = []
+            confidences = []
             
-            # Transcribe
-            with torch.no_grad():
-                logits = self.model(**inputs).logits
+            for segment in segments:
+                transcription_parts.append(segment.text)
+                confidences.append(segment.avg_logprob)  # Log probability
             
-            # Decode
-            predicted_ids = torch.argmax(logits, dim=-1)
-            transcription = self.processor.batch_decode(predicted_ids)[0]
+            # Combine transcription
+            transcription = " ".join(transcription_parts).strip()
             
-            # Calculate confidence (average of max probabilities)
-            probabilities = torch.softmax(logits, dim=-1)
-            max_probs = torch.max(probabilities, dim=-1)[0]
-            confidence = max_probs.mean().item()
+            # Calculate confidence (convert log prob to probability)
+            if confidences:
+                avg_confidence = np.exp(np.mean(confidences))  # Convert log prob to prob
+                # Normalize to 0-1 range
+                confidence = min(max(avg_confidence, 0.0), 1.0)
+            else:
+                confidence = 0.0
+            
+            # Clean up temporary file
+            if temp_wav_path and os.path.exists(temp_wav_path):
+                os.remove(temp_wav_path)
+            
+            print(f"✅ Transcription successful: {transcription[:50]}...")
+            print(f"📊 Confidence: {confidence:.2%}")
             
             return transcription, confidence
             
         except Exception as e:
             print(f"❌ Transcription error: {e}")
+            # Clean up on error
+            if temp_wav_path and os.path.exists(temp_wav_path):
+                os.remove(temp_wav_path)
             raise
     
     def compare_texts(self, user_text: str, reference_text: str) -> Dict:

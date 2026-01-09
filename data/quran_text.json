@@ -1,6 +1,6 @@
-{
-  "surahs": [
+{  "surahs": [
     {
+      "number": 1,
       "name": "الفاتحة",
       "name_english": "Al-Fatiha",
       "revelation": "Makkah",
@@ -47,9 +47,9 @@
           "translation_en": "The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray",
           "translation_ur": "ان لوگوں کا راستہ جن پر تو نے انعام کیا، ان کا نہیں جن پر غضب ہوا اور نہ گمراہوں کا"
         }
-      ]
-    },
+      ]    },
     {
+      "number": 112,
       "name": "الإخلاص",
       "name_english": "Al-Ikhlas",
       "revelation": "Makkah",
@@ -78,9 +78,9 @@
           "translation_en": "Nor is there to Him any equivalent",
           "translation_ur": "اور کوئی اس کا ہمسر نہیں"
         }
-      ]
-    },
+      ]    },
     {
+      "number": 113,
       "name": "الفلق",
       "name_english": "Al-Falaq",
       "revelation": "Makkah",
