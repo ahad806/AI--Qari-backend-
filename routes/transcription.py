@@ -92,8 +92,8 @@ async def transcribe(
             temp_file.write(content)
             temp_path = temp_file.name
         try:
-            # Transcribe
-            transcription, confidence = service.transcribe_audio(temp_path)
+            # Transcribe (returns transcription, confidence, word_timings)
+            transcription, confidence, _word_timings = service.transcribe_audio(temp_path)
             
             # Try to get reference text (but don't fail if not found)
             reference_text = None
@@ -103,13 +103,11 @@ async def transcribe(
             
             try:
                 if QURAN_DATA.get('surahs'):
-                    # Find surah by matching number (handle different indexing)
-                    surah_data = None
-                    for s in QURAN_DATA['surahs']:
-                        # Check if this is the right surah (by number or index)
-                        if s.get('number') == surah or (QURAN_DATA['surahs'].index(s) + 1 == surah):
-                            surah_data = s
-                            break
+                    # Lookup by .number field — NOT by array index
+                    surah_data = next(
+                        (s for s in QURAN_DATA['surahs'] if s.get('number') == surah),
+                        None
+                    )
                     
                     if surah_data and ayah <= len(surah_data['ayahs']):
                         ayah_data = surah_data['ayahs'][ayah - 1]

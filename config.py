@@ -19,9 +19,9 @@ SAMPLE_RATE = 16000
 # Tajweed thresholds (can be tuned based on Qari validation)
 TAJWEED_THRESHOLDS = {
     "madd": {
-        "madd_asli": (0.35, 0.65),      # 2 harakaat: 0.5s ± 0.15s
-        "madd_wajib": (0.65, 1.15),     # 4-5 harakaat: 0.9s ± 0.25s
-        "madd_lazim": (1.25, 1.75)      # 6 harakaat: 1.5s ± 0.25s
+        "madd_asli":  (0.25, 0.90),     # 2 harakaat: 0.5s, generous ±0.35s tolerance
+        "madd_wajib": (0.55, 1.30),     # 4-5 harakaat: wider range for natural variation
+        "madd_lazim": (1.00, 2.00)      # 6 harakaat: wider range for natural variation
     },
     "qalqalah": {
         "intensity_spike_threshold": 0.20  # 20% intensity spike

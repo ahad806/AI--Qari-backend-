@@ -15,7 +15,7 @@ from typing import List, Dict
 
 router = APIRouter()
 
-# Load data
+# Load data and its rules already written in the data folder
 DATA_DIR = FilePath(__file__).parent.parent / "data"
 
 try:
@@ -109,9 +109,9 @@ async def check_tajweed(
             temp_path = temp_file.name
         
         try:
-            # Step 1: Transcribe
+            # Step 1: Transcribe (now returns real word-level timestamps)
             print(f"📝 Transcribing audio for Surah {surah}, Ayah {ayah}...")
-            transcription, confidence = transcription_service.transcribe_audio(temp_path)
+            transcription, confidence, word_timings = transcription_service.transcribe_audio(temp_path)
             
             # Get reference
             if not QURAN_DATA.get('surahs'):
@@ -120,13 +120,16 @@ async def check_tajweed(
                     detail="Quran data not loaded"
                 )
             
-            if surah > len(QURAN_DATA['surahs']):
+            # Lookup by .number field — NOT by array index
+            surah_data = next(
+                (s for s in QURAN_DATA['surahs'] if s.get('number') == surah),
+                None
+            )
+            if surah_data is None:
                 raise HTTPException(
                     status_code=404,
-                    detail=f"Surah {surah} not found"
+                    detail=f"Surah {surah} not found in data"
                 )
-            
-            surah_data = QURAN_DATA['surahs'][surah - 1]
             
             if ayah > len(surah_data['ayahs']):
                 raise HTTPException(
@@ -157,33 +160,60 @@ async def check_tajweed(
                     feedback_summary_en="No Tajweed rules defined for this ayah"
                 )
             
-            # Step 3: Word-level timing (simplified for MVP)
-            print(f"⏱️  Estimating word timings...")
-            word_timings = estimate_word_timings(temp_path, reference_text.split())
+            # Step 3: Word-level timing (real timestamps from Whisper)
+            print(f"⏱️  Using {len(word_timings)} real word timestamps from Whisper...")
+            # If Whisper returned no word timings (very short audio), fall back gracefully
+            if not word_timings:
+                print(f"⚠️  No word timestamps from Whisper, using equal-split fallback")
+                audio_fb, sr_fb = librosa.load(temp_path, sr=16000)
+                total_dur = len(audio_fb) / sr_fb
+                ref_words = reference_text.split()
+                word_dur = total_dur / max(len(ref_words), 1)
+                word_timings = [
+                    {"position": i, "word": w,
+                     "start_time": round(i * word_dur, 3),
+                     "end_time": round((i + 1) * word_dur, 3)}
+                    for i, w in enumerate(ref_words)
+                ]
             
-            # Step 4: Check Tajweed rules
-            print(f"🔍 Checking {len(tajweed_rules)} Tajweed rules...")
-            errors, tajweed_accuracy = tajweed_service.check_all_rules(
-                temp_path,
-                tajweed_rules,
-                word_timings
-            )
-            
-            # Generate feedback summary
-            if len(errors) == 0:
-                feedback_ur = "ماشاءاللہ! تجوید بالکل صحیح ہے"
-                feedback_en = "MashaAllah! All Tajweed rules are correct"
+            # Step 4: Guard — skip acoustic checks if wrong ayah recited
+            # If the user uploaded the wrong Surah or full Surah audio,
+            # Whisper word positions will be misaligned → false results.
+            MATCH_THRESHOLD = 40.0
+            match_pct       = comparison['similarity']
+            wrong_ayah      = match_pct < MATCH_THRESHOLD
+
+            if wrong_ayah:
+                print(f"⚠️  Match too low ({match_pct}%) — skipping acoustic checks")
+                errors         = []
+                tajweed_accuracy = 0.0
+                feedback_ur    = (f"غلط آیت تلاوت کی گئی ({match_pct:.0f}% مطابقت)۔ "
+                                  f"براہ کرم سورۃ {surah} آیت {ayah} دوبارہ تلاوت کریں")
+                feedback_en    = (f"Wrong ayah detected ({match_pct:.0f}% match). "
+                                  f"Please recite Surah {surah} Ayah {ayah} again.")
             else:
-                error_types = list(set(e.rule_type for e in errors))
-                feedback_ur = f"{len(errors)} غلطیاں ملیں: " + "، ".join(error_types)
-                feedback_en = f"Found {len(errors)} error(s) in: " + ", ".join(error_types)
-            
-            print(f"✅ Tajweed check complete. Accuracy: {tajweed_accuracy}%")
-            
+                # Step 5: Run acoustic Tajweed checks
+                print(f"🔍 Checking {len(tajweed_rules)} Tajweed rules "
+                      f"(match={match_pct}%)...")
+                errors, tajweed_accuracy = tajweed_service.check_all_rules(
+                    temp_path, tajweed_rules, word_timings
+                )
+
+                if len(errors) == 0:
+                    feedback_ur = "ماشاءاللہ! تجوید بالکل صحیح ہے"
+                    feedback_en = "MashaAllah! All Tajweed rules are correct."
+                else:
+                    error_types = list(set(e.rule_type for e in errors))
+                    feedback_ur = f"{len(errors)} غلطیاں ملیں: " + "، ".join(error_types)
+                    feedback_en = (f"Found {len(errors)} error(s) in: "
+                                   + ", ".join(error_types))
+
+            print(f"Tajweed check complete. Accuracy: {tajweed_accuracy}%")
+
             return TajweedCheckResponse(
                 success=True,
                 overall_accuracy=tajweed_accuracy,
-                transcription_match=comparison['similarity'],
+                transcription_match=match_pct,
                 errors=errors,
                 total_errors=len(errors),
                 feedback_summary_ur=feedback_ur,
@@ -191,9 +221,13 @@ async def check_tajweed(
             )
             
         finally:
-            # Clean up temp file
+            # Fix #3: Windows holds a file lock briefly after pydub/Whisper
+            # closes it. Swallow PermissionError — OS cleans Temp on reboot.
             if os.path.exists(temp_path):
-                os.unlink(temp_path)
+                try:
+                    os.unlink(temp_path)
+                except PermissionError:
+                    print(f"⚠️  Could not delete temp file (Windows lock): {temp_path}")
     
     except HTTPException:
         raise
@@ -204,35 +238,3 @@ async def check_tajweed(
             detail=f"Tajweed check failed: {str(e)}"
         )
 
-
-def estimate_word_timings(audio_path: str, words: List[str]) -> List[Dict]:
-    """
-    Estimate word-level timestamps (simplified for MVP)
-    
-    For production: Use Montreal Forced Aligner or similar tools
-    For MVP: Divide audio duration equally among words
-    
-    Args:
-        audio_path: Path to audio file
-        words: List of words
-    
-    Returns:
-        List of dictionaries with word timings
-    """
-    # Load audio to get duration
-    audio, sr = librosa.load(audio_path, sr=16000)
-    total_duration = len(audio) / sr
-    
-    # Divide equally among words
-    word_duration = total_duration / len(words) if len(words) > 0 else 0
-    
-    timings = []
-    for i, word in enumerate(words):
-        timings.append({
-            "position": i,
-            "word": word,
-            "start_time": i * word_duration,
-            "end_time": (i + 1) * word_duration
-        })
-    
-    return timings

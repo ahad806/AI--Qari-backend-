@@ -6,7 +6,7 @@ from faster_whisper import WhisperModel
 import torch
 import librosa
 import numpy as np
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 from config import WHISPER_MODEL, SAMPLE_RATE
 from pydub import AudioSegment
 import tempfile
@@ -39,7 +39,7 @@ class TranscriptionService:
         self.device = device
         print(f"✅ Faster-Whisper model loaded successfully on {device}")
     
-    def transcribe_audio(self, audio_path: str) -> Tuple[str, float]:
+    def transcribe_audio(self, audio_path: str) -> Tuple[str, float, List[Dict]]:
         """
         Transcribe audio file to Arabic text using Faster-Whisper
         
@@ -47,7 +47,8 @@ class TranscriptionService:
             audio_path: Path to audio file (.wav, .mp3, .m4a)
         
         Returns:
-            Tuple of (transcription, confidence_score)
+            Tuple of (transcription, confidence_score, word_timings)
+            word_timings: list of {position, word, start_time, end_time}
         """
         try:
             # Convert audio to WAV format with 16kHz sample rate if needed
@@ -71,22 +72,36 @@ class TranscriptionService:
                 sf.write(temp_wav_path, audio, SAMPLE_RATE)
                 process_path = temp_wav_path
             
-            # Transcribe using Faster-Whisper
+            # Transcribe using Faster-Whisper with real word-level timestamps
             segments, info = self.model.transcribe(
                 process_path,
                 language="ar",  # Arabic language
                 beam_size=5,    # Better accuracy
+                word_timestamps=True,  # ← Real per-word start/end times
                 vad_filter=True,  # Voice Activity Detection
                 vad_parameters=dict(min_silence_duration_ms=500)
             )
             
-            # Collect transcription and calculate average confidence
+            # Collect transcription, word timings, and confidence
             transcription_parts = []
             confidences = []
+            word_timings = []  # Real timestamps from Whisper
+            word_position = 0
             
             for segment in segments:
                 transcription_parts.append(segment.text)
                 confidences.append(segment.avg_logprob)  # Log probability
+                
+                # Extract real word-level timestamps
+                if segment.words:  # word_timestamps=True populates this
+                    for word in segment.words:
+                        word_timings.append({
+                            "position": word_position,
+                            "word": word.word.strip(),
+                            "start_time": round(word.start, 3),
+                            "end_time": round(word.end, 3)
+                        })
+                        word_position += 1
             
             # Combine transcription
             transcription = " ".join(transcription_parts).strip()
@@ -105,8 +120,9 @@ class TranscriptionService:
             
             print(f"✅ Transcription successful: {transcription[:50]}...")
             print(f"📊 Confidence: {confidence:.2%}")
+            print(f"⏱️  Word timings extracted: {len(word_timings)} words")
             
-            return transcription, confidence
+            return transcription, confidence, word_timings
             
         except Exception as e:
             print(f"❌ Transcription error: {e}")

@@ -60,14 +60,16 @@ async def get_reference(
                 detail="Quran data not loaded. Please add quran_text.json to data folder."
             )
         
-        # Get surah data
-        if surah_number > len(QURAN_DATA['surahs']):
+        # Lookup by .number field — NOT by array index
+        surah_data = next(
+            (s for s in QURAN_DATA['surahs'] if s.get('number') == surah_number),
+            None
+        )
+        if surah_data is None:
             raise HTTPException(
                 status_code=404,
-                detail=f"Surah {surah_number} not found"
+                detail=f"Surah {surah_number} not found in data"
             )
-        
-        surah_data = QURAN_DATA['surahs'][surah_number - 1]
         
         # Validate ayah number
         if ayah_number > len(surah_data['ayahs']):
@@ -127,9 +129,9 @@ async def get_surahs():
             )
         
         surahs = []
-        for idx, surah in enumerate(QURAN_DATA['surahs']):
+        for surah in QURAN_DATA['surahs']:
             surahs.append(SurahInfo(
-                number=idx + 1,
+                number=surah['number'],             # ← actual surah number (e.g. 112, 113)
                 name_arabic=surah['name'],
                 name_english=surah.get('name_english', ''),
                 total_ayahs=len(surah['ayahs']),

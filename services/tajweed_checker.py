@@ -333,7 +333,7 @@ class TajweedChecker:
         return errors, round(accuracy, 2)
 
 
-# Global instance
+# Global and singleton instance 
 _tajweed_checker = None
 
 

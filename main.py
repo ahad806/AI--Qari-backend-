@@ -3,12 +3,15 @@ AI Qaari Backend API
 FastAPI server for Quranic recitation transcription and Tajweed evaluation
 """
 
+import sys
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import uvicorn
 
-from routes import reference, transcription, tajweed
+from routes import reference, transcription, tajweed, visualizer
+from routes.ws_recite import ws_recite_endpoint
 from services.transcription import get_transcription_service
 from services.tajweed_checker import get_tajweed_checker
 
@@ -19,28 +22,28 @@ async def lifespan(app: FastAPI):
     Startup and shutdown events
     Load ML models once at startup
     """
-    print("🚀 Starting AI Qaari API...")
-    print("📚 Loading Wav2Vec2 model for Arabic transcription...")
+    print("[AI Qaari] Starting API...")
+    print("[AI Qaari] Loading models...")
     
     # Pre-load models (they'll be cached in memory)
     try:
         _ = get_transcription_service()
-        print("✅ Transcription service loaded successfully")
+        print("[AI Qaari] Transcription service loaded OK")
     except Exception as e:
-        print(f"⚠️  Warning: Could not load transcription service: {e}")
+        print(f"[AI Qaari] WARNING: Could not load transcription service: {e}")
     
     try:
         _ = get_tajweed_checker()
-        print("✅ Tajweed checker loaded successfully")
+        print("[AI Qaari] Tajweed checker loaded OK")
     except Exception as e:
-        print(f"⚠️  Warning: Could not load tajweed checker: {e}")
+        print(f"[AI Qaari] WARNING: Could not load tajweed checker: {e}")
     
-    print("✨ AI Qaari API is ready!")
-    print("📖 API Documentation: http://localhost:8000/docs")
+    print("[AI Qaari] API is ready!")
+    print("[AI Qaari] Docs: http://localhost:8000/docs")
     
     yield
     
-    print("🛑 Shutting down AI Qaari API...")
+    print("[AI Qaari] Shutting down...")
 
 
 app = FastAPI(
@@ -62,9 +65,13 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(reference.router, prefix="/api", tags=["📖 Reference Data"])
+app.include_router(reference.router,     prefix="/api", tags=["📖 Reference Data"])
 app.include_router(transcription.router, prefix="/api", tags=["🎤 Transcription"])
-app.include_router(tajweed.router, prefix="/api", tags=["✨ Tajweed Evaluation"])
+app.include_router(tajweed.router,       prefix="/api", tags=["✨ Tajweed Evaluation"])
+app.include_router(visualizer.router,    prefix="/api", tags=["🎨 Tajweed Visualizer"])
+
+# WebSocket route for real-time Tajweed correction
+app.add_websocket_route("/ws/recite", ws_recite_endpoint)
 
 
 @app.get("/", summary="API Status", tags=["System"])
@@ -107,5 +114,6 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8000,
         reload=True,  # Auto-reload on code changes (development only)
-        log_level="info"
+        log_level="info",
+        ws_ping_timeout=300,   # 5 min — prevents disconnect during long Whisper jobs
     )
