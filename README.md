@@ -530,7 +530,6 @@ This project is for educational purposes. Quran text and audio from Tanzil.net a
 - [ ] Real-time feedback
 - [ ] Voice feedback in Urdu/Hindi
 - [ ] Mobile SDK
-- [ ] Offline mode
 
 ---
 
