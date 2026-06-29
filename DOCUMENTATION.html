@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Al-Qari – Full Technical Documentation</title>
+  <style>
+    /* ══════════════════════════════════════════════
+       RESET & GLOBALS
+    ══════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #612EA6;
+      --primary-l: #863ED5;
+      --primary-d: #3B1E77;
+      --accent:    #DFC4FF;
+      --bg:        #FAFAFA;
+      --card:      #FFFFFF;
+      --border:    #E8E0F5;
+      --text:      #1a1a2e;
+      --text-sub:  #555577;
+      --green:     #22c55e;
+      --orange:    #f97316;
+      --blue:      #3b82f6;
+      --red:       #ef4444;
+      --yellow:    #f59e0b;
+      --shadow:    0 4px 24px rgba(97, 46, 166, 0.10);
+      --shadow-sm: 0 2px 8px rgba(97, 46, 166, 0.08);
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════════════
+       SIDEBAR NAV
+    ══════════════════════════════════════════════ */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 260px; height: 100vh;
+      background: linear-gradient(160deg, var(--primary-d) 0%, var(--primary) 60%, var(--primary-l) 100%);
+      color: #fff;
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .sidebar-logo .brand {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-logo .brand .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .sidebar-logo .version {
+      font-size: 0.72rem;
+      opacity: 0.65;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-section {
+      padding: 16px 12px 4px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px 9px 18px;
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: rgba(255,255,255,0.1);
+      border-left-color: var(--accent);
+      color: #fff;
+    }
+
+    .sidebar a .icon { font-size: 0.9rem; opacity: 0.8; width: 18px; text-align: center; }
+
+    /* ══════════════════════════════════════════════
+       MAIN CONTENT
+    ══════════════════════════════════════════════ */
+    .main {
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-d) 0%, var(--primary) 50%, var(--primary-l) 100%);
+      color: #fff;
+      padding: 80px 60px 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 20%;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50px;
+      padding: 5px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      opacity: 0.82;
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .hero-tag {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* ── CONTENT WRAPPER ────────────────────────── */
+    .content {
+      padding: 48px 60px;
+      max-width: 1100px;
+    }
+
+    /* ── SECTION TITLE ─────────────────────────── */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-title .icon-circle {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .section-title h2 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--primary-d);
+      letter-spacing: -0.3px;
+    }
+
+    .section-title p {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    /* ── CARDS ─────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-d);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      color: var(--text-sub);
+      font-size: 0.92rem;
+    }
+
+    /* ── GRID ──────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    /* ── STAT CARDS ────────────────────────────── */
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .stat-card .stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ── BADGE ─────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      border-radius: 50px;
+      padding: 3px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-purple { background: var(--accent); color: var(--primary-d); }
+    .badge-green  { background: #dcfce7; color: #166534; }
+    .badge-orange { background: #ffedd5; color: #9a3412; }
+    .badge-blue   { background: #dbeafe; color: #1e40af; }
+    .badge-red    { background: #fee2e2; color: #991b1b; }
+
+    /* ── TABLE ─────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead tr {
+      background: linear-gradient(90deg, var(--primary-d), var(--primary));
+      color: #fff;
+    }
+
+    thead th {
+      padding: 13px 18px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.3px;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover { background: var(--accent) + '20'; background: #f5eeff; }
+
+    tbody td {
+      padding: 12px 18px;
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    tbody td:first-child { font-weight: 600; }
+
+    /* ── CODE BLOCK ────────────────────────────── */
+    .code-block {
+      background: #1e1b2e;
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      font-size: 0.83rem;
+      color: #e2d9f3;
+      overflow-x: auto;
+      line-height: 1.7;
+      margin: 12px 0;
+      border-left: 3px solid var(--primary-l);
+    }
+
+    .code-block .kw  { color: #c084fc; }
+    .code-block .str { color: #86efac; }
+    .code-block .cmt { color: #6b7280; font-style: italic; }
+    .code-block .num { color: #fbbf24; }
+    .code-block .fn  { color: #60a5fa; }
+
+    /* ── ENDPOINT BLOCK ────────────────────────── */
+    .endpoint {
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: #f9f7ff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .method {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .method-get    { background: #dcfce7; color: #166534; }
+    .method-post   { background: #dbeafe; color: #1e40af; }
+    .method-ws     { background: #fef3c7; color: #92400e; }
+
+    .endpoint-path {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary-d);
+    }
+
+    .endpoint-desc {
+      padding: 14px 20px;
+      font-size: 0.88rem;
+      color: var(--text-sub);
+    }
+
+    /* ── AI MODEL CARD ─────────────────────────── */
+    .model-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .model-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-l));
+    }
+
+    .model-card .model-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .model-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-d);
+      margin-bottom: 4px;
+    }
+
+    .model-card .model-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+    }
+
+    .model-card .model-body {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    .model-card .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .spec-item {
+      background: #f5eeff;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+    }
+
+    .spec-item .spec-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .spec-item .spec-val {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary-d);
+    }
+
+    /* ── FLOW DIAGRAM ──────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      margin: 20px 0;
+    }
+
+    .flow-step {
+      background: var(--card);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary-d);
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .flow-arrow {
+      color: var(--primary-l);
+      font-size: 1.3rem;
+      padding: 0 8px;
+      font-weight: 700;
+    }
+
+    /* ── FEATURE ITEM ──────────────────────────── */
+    .feature-list { list-style: none; display: grid; gap: 10px; }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .feature-list li .fi {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .feature-list li strong { display: block; color: var(--primary-d); font-weight: 700; }
+
+    /* ── SECTION SPACER ────────────────────────── */
+    .section {
+      padding: 52px 60px 20px;
+      max-width: 1100px;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 40px 60px;
+    }
+
+    /* ── SCREEN ROW ─────────────────────────────── */
+    .screen-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .screen-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 16px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .screen-card .sc-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .screen-card .sc-name {
+      font-size: 0.87rem;
+      font-weight: 700;
+      color: var(--primary-d);
+    }
+
+    .screen-card .sc-desc {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .footer {
+      background: var(--primary-d);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 32px 60px;
+      font-size: 0.82rem;
+      margin-top: 60px;
+    }
+
+    .footer strong { color: #fff; }
+
+    /* ── TAJWEED COLOR SWATCH ─────────────────────── */
+    .tajweed-swatch {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .swatch-dot {
+      width: 16px; height: 16px;
+      border-radius: 4px;
+    }
+
+    /* ── ALERT ─────────────────────────────────── */
+    .alert {
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .alert-info { background: #dbeafe; border-left: 4px solid #3b82f6; color: #1e40af; }
+    .alert-warning { background: #fef3c7; border-left: 4px solid #f59e0b; color: #92400e; }
+    .alert-success { background: #dcfce7; border-left: 4px solid #22c55e; color: #166534; }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .hero { padding: 48px 24px; }
+      .content, .section { padding: 32px 24px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      hr.divider { margin: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand"><span class="dot"></span> Al-Qari</div>
+    <div class="version">Full Technical Documentation · v1.0</div>
+  </div>
+
+  <div class="nav-section">Overview</div>
+  <a href="#overview"><span class="icon">🏠</span> Project Overview</a>
+  <a href="#architecture"><span class="icon">🏗️</span> System Architecture</a>
+
+  <div class="nav-section">AI Models</div>
+  <a href="#ai-models"><span class="icon">🤖</span> Models Used</a>
+  <a href="#whisper"><span class="icon">🎙️</span> Faster-Whisper (ASR)</a>
+  <a href="#tajweed-ai"><span class="icon">📐</span> Tajweed Engine</a>
+
+  <div class="nav-section">Backend</div>
+  <a href="#backend-overview"><span class="icon">⚙️</span> Backend Overview</a>
+  <a href="#backend-stack"><span class="icon">🧰</span> Technology Stack</a>
+  <a href="#api-endpoints"><span class="icon">🔌</span> API Endpoints</a>
+  <a href="#websocket"><span class="icon">📡</span> WebSocket Protocol</a>
+  <a href="#data-layer"><span class="icon">📦</span> Data Layer</a>
+
+  <div class="nav-section">Frontend</div>
+  <a href="#frontend-overview"><span class="icon">📱</span> App Overview</a>
+  <a href="#frontend-stack"><span class="icon">🛠️</span> Flutter Stack</a>
+  <a href="#features"><span class="icon">✨</span> App Features</a>
+  <a href="#screens"><span class="icon">🖼️</span> Screens</a>
+  <a href="#state"><span class="icon">🔄</span> State Management</a>
+  <a href="#services"><span class="icon">🔧</span> Core Services</a>
+
+  <div class="nav-section">Reference</div>
+  <a href="#schemas"><span class="icon">📋</span> Data Schemas</a>
+  <a href="#deployment"><span class="icon">🚀</span> Deployment</a>
+  <a href="#glossary"><span class="icon">📖</span> Glossary</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">📄 Full Technical Documentation</div>
+    <h1>Al-Qari <span>App &amp; Backend</span></h1>
+    <p class="hero-sub">
+      A complete, AI-powered Quranic recitation learning platform. This document covers the
+      backend API, AI/ML models, Flutter mobile app, real-time WebSocket protocol, and every
+      system component in detail.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">🤖 Faster-Whisper ASR</span>
+      <span class="hero-tag">🎤 Real-time Recitation</span>
+      <span class="hero-tag">📐 Tajweed Analysis</span>
+      <span class="hero-tag">🐍 FastAPI Python</span>
+      <span class="hero-tag">📱 Flutter / Dart</span>
+      <span class="hero-tag">🔥 Firebase</span>
+      <span class="hero-tag">📡 WebSocket</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+  <section class="section" id="overview">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#ede9fe">🏠</div>
+      <div>
+        <h2>Project Overview</h2>
+        <p>What Al-Qari is, its purpose, and goals</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🕌 What is Al-Qari?</h3>
+      <p>
+        <strong>Al-Qari</strong> (Arabic: القاري — "The Reciter") is an AI-powered Quranic recitation
+        learning platform that helps Muslims of all levels learn, practice, and improve their Quranic
+        recitation. It combines a Python/FastAPI AI backend with a Flutter mobile app, delivering
+        real-time Tajweed feedback, word-by-word accuracy scoring, and progress tracking.
+      </p>
+    </div>
+
+    <div class="grid-3" style="margin-top:20px">
+      <div class="stat-card">
+        <div class="stat-num">114</div>
+        <div class="stat-label">Surahs Supported</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Tajweed Rules Detected</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6</div>
+        <div class="stat-label">REST + WS Endpoints</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Real‑time</div>
+        <div class="stat-label">Partial Transcription</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">16 kHz</div>
+        <div class="stat-label">Audio Sample Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">v1.0</div>
+        <div class="stat-label">Current Release</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px">
+      <h3>🎯 Key Features</h3>
+      <ul class="feature-list" style="margin-top:12px">
+        <li><span class="fi">🎙️</span><div><strong>AI Recitation Analysis</strong>Upload or stream audio and receive word-by-word accuracy comparison against the official Quran text.</div></li>
+        <li><span class="fi">📐</span><div><strong>Tajweed Rule Checking</strong>Automated detection of Madd (elongation), Qalqalah (echo), and Ghunnah (nasal) errors with Urdu and English explanations.</div></li>
+        <li><span class="fi">📡</span><div><strong>Real-time WebSocket Feedback</strong>Continuous partial transcription during live recitation, so learners see feedback as they recite.</div></li>
+        <li><span class="fi">🎨</span><div><strong>Tajweed Visualizer</strong>Color-coded word annotations (blue = Madd, orange = Qalqalah, green = Ghunnah) with no audio required.</div></li>
+        <li><span class="fi">📊</span><div><strong>Progress Tracking</strong>Session history, accuracy trends (charts), and rolling stats — all persisted to Firebase Firestore.</div></li>
+        <li><span class="fi">📚</span><div><strong>Integrated Quran Reader</strong>Full Quran with authentic Arabic font, word audio playback, and Tajweed highlighting.</div></li>
+        <li><span class="fi">📖</span><div><strong>Learning Modules</strong>Tajweed rules guide, Qaida (basics), and Qirat (recitation styles) educational content.</div></li>
+        <li><span class="fi">🔐</span><div><strong>Firebase Authentication</strong>Email/password and Google Sign-In with secure user accounts.</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══════════════════ ARCHITECTURE ═══════════════════ -->
+  <section class="section" id="architecture">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#dbeafe">🏗️</div>
+      <div>
+        <h2>System Architecture</h2>
+        <p>How the frontend, backend, and AI layer connect</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗺️ High-Level Architecture</h3>
+      <div class="flow" style="margin-top:16px">
+        <div class="flow-step">📱 Flutter App<br/><small style="font-weight:400;color:#888">iOS / Android</small></div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step">📡 WebSocket<br/><small style="font-weight:400;color:#888">/ws/recite</small></div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step">⚙️ FastAPI<br/><small style="font-weight:400;color:#888">Python Backend</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">🤖 AI Models<br/><small style="font-weight:400;color:#888">Whisper + LibROSA</small></div>
+      </div>
+      <div class="flow" style="margin-top:12px">
+        <div class="flow-step">📱 Flutter App<br/><small style="font-weight:400;color:#888">HTTP Requests</small></div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step">🔌 REST API<br/><small style="font-weight:400;color:#888">/api/*</small></div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step">🔥 Firebase<br/><small style="font-weight:400;color:#888">Auth + Firestore</small></div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <h3>⚙️ Backend</h3>
+        <p>Python 3.11 · FastAPI · Uvicorn · AWS EC2<br/>Deployed at <code>13.63.216.254:8000</code></p>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:8px">
+          <span class="badge badge-blue">FastAPI</span>
+          <span class="badge badge-purple">PyTorch</span>
+          <span class="badge badge-green">Faster-Whisper</span>
+          <span class="badge badge-orange">LibROSA</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>📱 Frontend</h3>
+        <p>Flutter 3 · Dart 3 · GetX · Firebase<br/>Supports Android &amp; iOS</p>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:8px">
+          <span class="badge badge-blue">Flutter</span>
+          <span class="badge badge-purple">GetX</span>
+          <span class="badge badge-green">Firebase</span>
+          <span class="badge badge-orange">quran_library</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══════════════════ AI MODELS ═══════════════════ -->
+  <section class="section" id="ai-models">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#fef3c7">🤖</div>
+      <div>
+        <h2>AI Models Used</h2>
+        <p>Complete breakdown of every AI/ML model powering Al-Qari</p>
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      ℹ️ Al-Qari uses two primary AI/ML components: a fine-tuned deep learning ASR model
+      for Quranic speech recognition, and an acoustic signal-processing engine for Tajweed rule checking.
+    </div>
+
+    <!-- MODEL 1 -->
+    <div class="model-card" id="whisper">
+      <div class="model-header">
+        <div>
+          <h3>🎙️ Model 1 — OdyAsh/faster-whisper-base-ar-quran</h3>
+          <div class="model-subtitle">Automatic Speech Recognition (ASR) · Hosted on Hugging Face</div>
+        </div>
+        <span class="badge badge-green">Active</span>
+      </div>
+      <div class="model-body">
+        <p style="margin-bottom:14px">
+          This is the core AI model of Al-Qari. It is a <strong>Faster-Whisper</strong> variant (a highly
+          optimized CTranslate2 conversion of OpenAI's Whisper architecture) that has been
+          <strong>fine-tuned specifically on Quranic Arabic recitation audio</strong>. Standard Whisper
+          models struggle with Quranic Arabic because it uses classical pronunciation, Tajweed articulations,
+          and specific stop/pause patterns not found in conversational Arabic. This fine-tuned model
+          understands those nuances.
+        </p>
+
+        <p style="margin-bottom:14px">
+          <strong>What is Whisper?</strong><br/>
+          OpenAI's Whisper is a Transformer-based encoder-decoder neural network trained on 680,000 hours
+          of multilingual audio. The encoder converts raw audio spectrograms into contextual embeddings;
+          the decoder generates token-by-token text output in the target language. The "base" size has
+          ~74M parameters — small enough to run on CPU in real-time while still being highly accurate for
+          constrained Arabic vocabulary (the Quran has ~77,000 words with limited vocabulary).
+        </p>
+
+        <p style="margin-bottom:14px">
+          <strong>Why Faster-Whisper?</strong><br/>
+          Faster-Whisper uses CTranslate2, an optimized inference engine that reduces memory usage by 4×
+          and increases speed by 2–4× compared to vanilla Whisper via quantization (INT8 on CPU, FP16 on GPU).
+          For a real-time recitation app, this speed improvement is critical.
+        </p>
+
+        <p style="margin-bottom:14px">
+          <strong>Key Whisper parameters configured in Al-Qari:</strong>
+        </p>
+
+        <div class="code-block"><span class="cmt"># From services/transcription.py</span>
+<span class="fn">self.model</span> = <span class="fn">WhisperModel</span>(
+    <span class="str">"OdyAsh/faster-whisper-base-ar-quran"</span>,
+    device=<span class="str">"cuda"</span> <span class="kw">if</span> torch.cuda.is_available() <span class="kw">else</span> <span class="str">"cpu"</span>,
+    compute_type=<span class="str">"float16"</span> <span class="kw">if</span> device == <span class="str">"cuda"</span> <span class="kw">else</span> <span class="str">"int8"</span>
+)
+
+<span class="cmt"># Transcription call with Quranic-specific tuning</span>
+segments, info = model.transcribe(
+    audio_path,
+    language=<span class="str">"ar"</span>,
+    beam_size=<span class="num">5</span>,                     <span class="cmt"># High accuracy for final eval</span>
+    word_timestamps=<span class="kw">True</span>,           <span class="cmt"># Required for Tajweed timing</span>
+    vad_filter=<span class="kw">True</span>,               <span class="cmt"># Strip silence</span>
+    vad_parameters=<span class="fn">dict</span>(
+        min_silence_duration_ms=<span class="num">800</span>,  <span class="cmt"># Allow waqf pauses</span>
+        speech_pad_ms=<span class="num">600</span>
+    ),
+    temperature=<span class="num">0</span>,                 <span class="cmt"># Greedy — deterministic</span>
+    repetition_penalty=<span class="num">1.1</span>         <span class="cmt"># Suppress tail hallucinations</span>
+)</div>
+
+        <div class="spec-grid">
+          <div class="spec-item">
+            <div class="spec-label">Architecture</div>
+            <div class="spec-val">Transformer Encoder-Decoder</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Base Model</div>
+            <div class="spec-val">OpenAI Whisper Base</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Parameters</div>
+            <div class="spec-val">~74 Million</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Language</div>
+            <div class="spec-val">Arabic (Classical / Quranic)</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Fine-tuned On</div>
+            <div class="spec-val">Quranic recitation dataset</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Inference Engine</div>
+            <div class="spec-val">CTranslate2 (Faster-Whisper)</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">CPU Compute</div>
+            <div class="spec-val">INT8 quantized</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">GPU Compute</div>
+            <div class="spec-val">FP16 half-precision</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Input Sample Rate</div>
+            <div class="spec-val">16,000 Hz mono</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Hosted On</div>
+            <div class="spec-val">Hugging Face Hub</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL 2 -->
+    <div class="model-card" id="tajweed-ai">
+      <div class="model-header">
+        <div>
+          <h3>📐 Model 2 — Acoustic Tajweed Engine (LibROSA + SciPy)</h3>
+          <div class="model-subtitle">Rule-based Signal Processing · Phase 1 MVP</div>
+        </div>
+        <span class="badge badge-orange">Phase 1 (MVP)</span>
+      </div>
+      <div class="model-body">
+        <p style="margin-bottom:14px">
+          The Tajweed checker is not a neural network but a <strong>rule-based acoustic analysis engine</strong>
+          built on top of LibROSA (audio feature extraction) and SciPy (signal processing). It analyzes the
+          raw audio waveform of each word to verify that Tajweed rules are physically applied correctly.
+        </p>
+        <p style="margin-bottom:14px">
+          This approach was chosen for Phase 1 because it is interpretable, fast, and deterministic — the
+          system can explain <em>exactly why</em> a recitation is incorrect (e.g., "Madd too short: 0.3s,
+          expected 0.6s"). A neural Tajweed classifier is planned for Phase 2.
+        </p>
+
+        <p style="margin-bottom:8px"><strong>Rules Detected:</strong></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tajweed Rule</th>
+                <th>Arabic</th>
+                <th>How it's Detected</th>
+                <th>Acoustic Feature</th>
+                <th>Threshold</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Madd Asli</td>
+                <td style="font-family:serif;font-size:1.1rem">مد أصلي</td>
+                <td>Vowel duration measurement</td>
+                <td>Audio segment length via LibROSA</td>
+                <td>0.25s – 0.90s</td>
+              </tr>
+              <tr>
+                <td>Madd Wajib</td>
+                <td style="font-family:serif;font-size:1.1rem">مد واجب</td>
+                <td>Longer vowel elongation</td>
+                <td>Audio segment length</td>
+                <td>0.55s – 1.30s</td>
+              </tr>
+              <tr>
+                <td>Madd Lazim</td>
+                <td style="font-family:serif;font-size:1.1rem">مد لازم</td>
+                <td>Maximum elongation (6 harakaat)</td>
+                <td>Audio segment length</td>
+                <td>1.00s – 2.00s</td>
+              </tr>
+              <tr>
+                <td>Qalqalah</td>
+                <td style="font-family:serif;font-size:1.1rem">قلقلة</td>
+                <td>Intensity spike detection</td>
+                <td>Energy envelope via LibROSA + SciPy</td>
+                <td>20% spike threshold</td>
+              </tr>
+              <tr>
+                <td>Ghunnah</td>
+                <td style="font-family:serif;font-size:1.1rem">غنة</td>
+                <td>Nasal frequency energy</td>
+                <td>Spectral analysis (nasal bands)</td>
+                <td>30% nasal energy, 0.35–0.65s</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="spec-grid" style="margin-top:18px">
+          <div class="spec-item">
+            <div class="spec-label">Audio Library</div>
+            <div class="spec-val">LibROSA 0.10.2</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Signal Processing</div>
+            <div class="spec-val">SciPy 1.14.1</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Approach</div>
+            <div class="spec-val">Rule-based acoustic</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Phase</div>
+            <div class="spec-val">Phase 1 MVP</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Output Languages</div>
+            <div class="spec-val">English + Urdu</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Next Phase</div>
+            <div class="spec-val">Neural DNN Classifier</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL 3 -->
+    <div class="model-card">
+      <div class="model-header">
+        <div>
+          <h3>🔊 Supporting Library — PyDub &amp; Audio Pipeline</h3>
+          <div class="model-subtitle">Audio pre-processing — not an ML model, but a critical pipeline step</div>
+        </div>
+        <span class="badge badge-blue">Utility</span>
+      </div>
+      <div class="model-body">
+        <p>
+          Before audio reaches the Whisper model, it is normalized using <strong>PyDub</strong>:
+          converted to WAV format, resampled to 16 kHz, and converted to mono. LibROSA then loads
+          the normalized array, which is shared between Whisper (for transcription) and the Tajweed
+          engine (for acoustic analysis) — avoiding duplicate disk reads.
+        </p>
+        <div class="flow" style="margin-top:14px; flex-wrap:wrap; gap:8px">
+          <div class="flow-step" style="min-width:90px;font-size:0.78rem">📤 Raw Audio<br/>(mp3/m4a/wav)</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="min-width:90px;font-size:0.78rem">🔄 PyDub<br/>Normalize</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="min-width:90px;font-size:0.78rem">📊 LibROSA<br/>Load Array</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="min-width:90px;font-size:0.78rem">🤖 Whisper<br/>Transcribe</div>
+          <div class="flow-arrow">+</div>
+          <div class="flow-step" style="min-width:90px;font-size:0.78rem">📐 Tajweed<br/>Engine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══════════════════ BACKEND ═══════════════════ -->
+  <section class="section" id="backend-overview">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#dcfce7">⚙️</div>
+      <div>
+        <h2>Backend Overview</h2>
+        <p>Al-Qari-Backend — FastAPI Python server</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📁 Project Structure</h3>
+      <div class="code-block">Al-Qari-Backend/
+├── main.py              <span class="cmt"># FastAPI app entry point — routes + lifespan</span>
+├── config.py            <span class="cmt"># Model names, thresholds, paths</span>
+├── requirements.txt     <span class="cmt"># Python dependencies</span>
+├── Procfile             <span class="cmt"># Heroku/Railway process definition</span>
+├── models/
+│   ├── __init__.py
+│   └── schemas.py       <span class="cmt"># All Pydantic request/response schemas</span>
+├── routes/
+│   ├── reference.py     <span class="cmt"># GET /api/reference/{surah}/{ayah}</span>
+│   ├── transcription.py <span class="cmt"># POST /api/transcribe</span>
+│   ├── tajweed.py       <span class="cmt"># POST /api/check-tajweed</span>
+│   ├── visualizer.py    <span class="cmt"># GET/POST /api/visualize-tajweed</span>
+│   └── ws_recite.py     <span class="cmt"># WS /ws/recite — real-time</span>
+├── services/
+│   ├── transcription.py <span class="cmt"># TranscriptionService (Whisper)</span>
+│   └── tajweed_checker.py <span class="cmt"># TajweedChecker (LibROSA)</span>
+└── data/
+    ├── quran_text.json  <span class="cmt"># Full Quran text (Tanzil.net)</span>
+    └── tajweed_rules.json <span class="cmt"># Pre-annotated Tajweed rules per ayah</span></div>
+    </div>
+
+    <div class="card" id="backend-stack">
+      <h3>🧰 Technology Stack</h3>
+      <div class="table-wrap" style="margin-top:10px">
+        <table>
+          <thead>
+            <tr><th>Package</th><th>Version</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>FastAPI</td><td>0.115.0</td><td>Web framework — async REST + WebSocket API</td></tr>
+            <tr><td>Uvicorn</td><td>0.32.0</td><td>ASGI server (production: Gunicorn + Uvicorn workers)</td></tr>
+            <tr><td>faster-whisper</td><td>1.1.0</td><td>Optimized Whisper ASR for Arabic Quranic speech</td></tr>
+            <tr><td>transformers</td><td>4.47.0</td><td>Hugging Face model loading infrastructure</td></tr>
+            <tr><td>torch / torchaudio</td><td>≥2.0.0</td><td>PyTorch backend for Whisper inference</td></tr>
+            <tr><td>librosa</td><td>0.10.2</td><td>Audio feature extraction for Tajweed analysis</td></tr>
+            <tr><td>scipy</td><td>1.14.1</td><td>Signal processing (energy envelopes, spectral)</td></tr>
+            <tr><td>numpy</td><td>1.26.4</td><td>Numerical arrays for audio processing</td></tr>
+            <tr><td>pydub</td><td>0.25.1</td><td>Audio format conversion (mp3/m4a → wav)</td></tr>
+            <tr><td>pydantic</td><td>2.10.3</td><td>Request/response validation schemas</td></tr>
+            <tr><td>python-multipart</td><td>0.0.12</td><td>File upload parsing for audio endpoints</td></tr>
+            <tr><td>gunicorn</td><td>23.0.0</td><td>Production process manager</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- API ENDPOINTS -->
+  <section class="section" id="api-endpoints">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#dbeafe">🔌</div>
+      <div>
+        <h2>API Endpoints</h2>
+        <p>All REST and WebSocket routes with request/response details</p>
+      </div>
+    </div>
+
+    <!-- 1. Root -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/</span>
+        <span class="badge badge-green">System</span>
+      </div>
+      <div class="endpoint-desc">Health check — returns API status, version, and available endpoint list.</div>
+    </div>
+
+    <!-- 2. Surahs -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/api/surahs</span>
+        <span class="badge badge-purple">Reference Data</span>
+      </div>
+      <div class="endpoint-desc">
+        Returns metadata for all 114 Surahs: number, Arabic name, English name, total ayahs, revelation place (Makkah/Madinah).
+      </div>
+    </div>
+
+    <!-- 3. Reference -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/api/reference/{surah_number}/{ayah_number}</span>
+        <span class="badge badge-purple">Reference Data</span>
+      </div>
+      <div class="endpoint-desc">
+        Returns full reference data for a specific ayah: Arabic text (Tanzil.net), English and Urdu translations,
+        pre-annotated Tajweed rules (type, position, letter, word, expected duration), and CDN audio URL.
+        <div class="code-block" style="margin-top:10px"><span class="cmt"># Example response</span>
+{
+  <span class="str">"surah"</span>: <span class="str">"الفاتحة"</span>,
+  <span class="str">"surah_number"</span>: <span class="num">1</span>,
+  <span class="str">"ayah"</span>: <span class="num">1</span>,
+  <span class="str">"arabic_text"</span>: <span class="str">"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"</span>,
+  <span class="str">"tajweed_rules"</span>: [
+    { <span class="str">"type"</span>: <span class="str">"MADD"</span>, <span class="str">"position"</span>: <span class="num">2</span>, <span class="str">"madd_type"</span>: <span class="str">"madd_asli"</span> }
+  ]
+}</div>
+      </div>
+    </div>
+
+    <!-- 4. Transcribe -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/api/transcribe</span>
+        <span class="badge badge-blue">Transcription</span>
+      </div>
+      <div class="endpoint-desc">
+        Upload an audio file (WAV/MP3/M4A, max 10 MB) with surah and ayah numbers.
+        Returns AI transcription, confidence score, match percentage vs. reference, and word-by-word comparison.
+        <div class="code-block" style="margin-top:10px"><span class="cmt"># multipart/form-data fields</span>
+audio: &lt;file&gt;    <span class="cmt"># .wav / .mp3 / .m4a</span>
+surah: <span class="num">1</span>         <span class="cmt"># Surah number</span>
+ayah:  <span class="num">1</span>         <span class="cmt"># Ayah number</span>
+
+<span class="cmt"># Response</span>
+{
+  <span class="str">"transcription"</span>: <span class="str">"بسم الله الرحمن الرحيم"</span>,
+  <span class="str">"confidence"</span>: <span class="num">0.94</span>,
+  <span class="str">"match_percentage"</span>: <span class="num">88.5</span>,
+  <span class="str">"word_comparison"</span>: [...]
+}</div>
+      </div>
+    </div>
+
+    <!-- 5. check-tajweed -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/api/check-tajweed</span>
+        <span class="badge badge-orange">Tajweed</span>
+      </div>
+      <div class="endpoint-desc">
+        Full Tajweed analysis: transcribes audio, identifies applied rules, runs acoustic checks for
+        Madd/Qalqalah/Ghunnah, and returns errors with Urdu and English feedback messages.
+        <div class="code-block" style="margin-top:10px"><span class="cmt"># Response includes</span>
+{
+  <span class="str">"overall_accuracy"</span>: <span class="num">85.0</span>,
+  <span class="str">"total_errors"</span>: <span class="num">2</span>,
+  <span class="str">"errors"</span>: [
+    {
+      <span class="str">"rule_type"</span>: <span class="str">"MADD"</span>,
+      <span class="str">"word"</span>: <span class="str">"الرَّحْمَٰنِ"</span>,
+      <span class="str">"error_message_en"</span>: <span class="str">"Madd too short (0.3s, should be 0.6s)"</span>,
+      <span class="str">"error_message_ur"</span>: <span class="str">"مد بہت چھوٹی ہے"</span>,
+      <span class="str">"measured_value"</span>: <span class="num">0.3</span>,
+      <span class="str">"expected_value"</span>: <span class="num">0.6</span>
+    }
+  ]
+}</div>
+      </div>
+    </div>
+
+    <!-- 6. Visualizer -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-get">GET</span>
+        <span class="endpoint-path">/api/visualize-tajweed/{surah}/{ayah}</span>
+        <span class="badge badge-purple">Visualizer</span>
+      </div>
+      <div class="endpoint-desc">
+        Returns word-by-word color-coded Tajweed annotations for an ayah — no audio required.
+        Each word includes its rule type, color code, and bilingual label.
+        <div class="tajweed-swatch" style="margin-top:12px">
+          <div class="swatch"><div class="swatch-dot" style="background:#3b82f6"></div>MADD — Blue (elongation)</div>
+          <div class="swatch"><div class="swatch-dot" style="background:#f97316"></div>QALQALAH — Orange (echo)</div>
+          <div class="swatch"><div class="swatch-dot" style="background:#22c55e"></div>GHUNNAH — Green (nasal)</div>
+          <div class="swatch"><div class="swatch-dot" style="background:#94a3b8"></div>Neutral — Slate (no rule)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Evaluated Visualizer -->
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method method-post">POST</span>
+        <span class="endpoint-path">/api/evaluate-tajweed</span>
+        <span class="badge badge-orange">Tajweed + Visualizer</span>
+      </div>
+      <div class="endpoint-desc">
+        Combined endpoint: uploads audio, runs full Tajweed evaluation, and returns annotated words
+        with per-word status (correct / error / missing) and color codes.
+      </div>
+    </div>
+
+    <!-- WS -->
+    <div class="endpoint" id="websocket">
+      <div class="endpoint-header">
+        <span class="method method-ws">WS</span>
+        <span class="endpoint-path">/ws/recite</span>
+        <span class="badge badge-yellow" style="background:#fef3c7;color:#92400e">Real-time</span>
+      </div>
+      <div class="endpoint-desc">
+        <strong>Real-time recitation with live partial transcription.</strong>
+        <div class="code-block" style="margin-top:12px"><span class="cmt">══ WebSocket Message Protocol ══</span>
+
+<span class="cmt"># CLIENT → SERVER (text JSON)</span>
+{ <span class="str">"type"</span>: <span class="str">"start"</span>, <span class="str">"surah"</span>: <span class="num">1</span>, <span class="str">"ayah"</span>: <span class="num">1</span> }   <span class="cmt"># ayah=0 → full surah mode</span>
+{ <span class="str">"type"</span>: <span class="str">"done"</span> }                              <span class="cmt"># Signal end of recording</span>
+
+<span class="cmt"># CLIENT → SERVER (binary)</span>
+&lt;raw PCM/WAV audio bytes, streamed in chunks&gt;
+
+<span class="cmt">══════════════════════════════════</span>
+
+<span class="cmt"># SERVER → CLIENT (text JSON)</span>
+{ <span class="str">"type"</span>: <span class="str">"ready"</span>,   <span class="str">"reference_text"</span>: <span class="str">"..."</span>, <span class="str">"total_rules"</span>: <span class="num">4</span> }
+{ <span class="str">"type"</span>: <span class="str">"partial"</span>, <span class="str">"transcription"</span>: <span class="str">"بسم الله"</span>, <span class="str">"words_heard"</span>: <span class="num">2</span> }
+{ <span class="str">"type"</span>: <span class="str">"result"</span>,  ...full EvaluatedWordAnnotation list... }
+{ <span class="str">"type"</span>: <span class="str">"error"</span>,   <span class="str">"message"</span>: <span class="str">"..."</span> }</div>
+
+        <p style="margin-top:10px; font-size:0.86rem; color:var(--text-sub)">
+          Partial transcription fires every <strong>~64 KB</strong> (~2s of audio) in single-ayah mode,
+          and every <strong>~480 KB</strong> (~15s) in full-surah mode. The server uses a 30-second
+          sliding window to keep Whisper within its context limit.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA LAYER -->
+  <section class="section" id="data-layer">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#fce7f3">📦</div>
+      <div>
+        <h2>Data Layer</h2>
+        <p>Quran text, Tajweed rules, and audio data</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>📖 quran_text.json</h3>
+        <p>Complete Quran text sourced from <strong>Tanzil.net</strong> — the standard reference for digital Quranic text.
+        Contains all 114 surahs with Arabic text, English and Urdu translations for each ayah,
+        and surah metadata (name, revelation place, total ayahs).</p>
+        <div style="margin-top:12px">
+          <span class="badge badge-green">114 Surahs</span>
+          <span class="badge badge-blue" style="margin-left:6px">6,236 Ayahs</span>
+          <span class="badge badge-purple" style="margin-left:6px">Tanzil.net Source</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>📐 tajweed_rules.json</h3>
+        <p>Pre-annotated Tajweed rules for each ayah, keyed by <code>"{surah}:{ayah}"</code>.
+        Each entry lists words with their rule type (MADD, QALQALAH, GHUNNAH), word position,
+        Arabic letter, madd type, and expected duration in seconds.</p>
+        <div style="margin-top:12px">
+          <span class="badge badge-orange">Hand-annotated</span>
+          <span class="badge badge-purple" style="margin-left:6px">Position-indexed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>🔊 CDN Audio</h3>
+      <p>Audio recitations are served from a public CDN (not stored locally). The reference endpoint returns
+      a CDN URL for each ayah, and the Flutter app streams it directly for playback in the Quran reader.
+      Uploaded user recordings are processed in memory via temporary files that are immediately deleted after analysis.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══════════════════ FRONTEND ═══════════════════ -->
+  <section class="section" id="frontend-overview">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#ede9fe">📱</div>
+      <div>
+        <h2>Frontend — Al-Qari App</h2>
+        <p>Flutter mobile application — iOS &amp; Android</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📁 Project Structure</h3>
+      <div class="code-block">lib/
+├── main.dart                    <span class="cmt"># App entry — Firebase init, QuranLibrary init</span>
+├── firebase_options.dart        <span class="cmt"># Auto-generated Firebase config</span>
+├── config/
+│   ├── assets/app_assets.dart   <span class="cmt"># Asset path constants</span>
+│   ├── bindings/                <span class="cmt"># GetX dependency injection bindings</span>
+│   ├── routes/                  <span class="cmt"># Named route definitions (AppRoutes, AppPages)</span>
+│   └── themes/                  <span class="cmt"># AppTheme, AppColors (purple brand palette)</span>
+├── core/
+│   ├── navigation/              <span class="cmt"># BottomNavController</span>
+│   ├── services/
+│   │   ├── progress_service.dart      <span class="cmt"># Firestore session + stats persistence</span>
+│   │   ├── quran_word_audio_service.dart <span class="cmt"># Word-level audio playback</span>
+│   │   ├── session_service.dart       <span class="cmt"># Local session state</span>
+│   │   └── urdu_tts_service.dart      <span class="cmt"># Text-to-speech for Urdu feedback</span>
+│   └── utils/responsive.dart    <span class="cmt"># Screen size helpers</span>
+├── features/
+│   ├── auth/                    <span class="cmt"># Firebase Auth — email + Google Sign-In</span>
+│   ├── home/                    <span class="cmt"># Home screen with navigation grid</span>
+│   ├── learn/                   <span class="cmt"># Tajweed guide, Qaida, Qirat sections</span>
+│   ├── onboarding/              <span class="cmt"># First-run onboarding screens</span>
+│   ├── profile/                 <span class="cmt"># User profile management</span>
+│   ├── progress/                <span class="cmt"># fl_chart accuracy graphs + stats</span>
+│   ├── quran/                   <span class="cmt"># Full Quran reader</span>
+│   ├── recitation/              <span class="cmt"># Core recitation feature (setup/active/result)</span>
+│   └── splash/                  <span class="cmt"># Splash screen</span>
+└── widgets/                     <span class="cmt"># Shared UI components</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="frontend-stack">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#dcfce7">🛠️</div>
+      <div>
+        <h2>Flutter Technology Stack</h2>
+        <p>All packages and their roles in the app</p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Package</th><th>Version</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>flutter / dart</td><td>SDK ^3.9.2</td><td>Core framework</td></tr>
+          <tr><td>get</td><td>^4.7.3</td><td>State management, routing, dependency injection (GetX)</td></tr>
+          <tr><td>firebase_core</td><td>^3.13.1</td><td>Firebase initialization</td></tr>
+          <tr><td>firebase_auth</td><td>^5.5.2</td><td>User authentication (email + Google)</td></tr>
+          <tr><td>cloud_firestore</td><td>^5.6.6</td><td>NoSQL database — progress sessions, user stats</td></tr>
+          <tr><td>google_sign_in</td><td>^6.2.2</td><td>Google OAuth sign-in flow</td></tr>
+          <tr><td>quran_library</td><td>^2.3.1</td><td>Quran text, authentic Arabic fonts, surah metadata</td></tr>
+          <tr><td>record</td><td>6.2.0</td><td>Microphone recording (PCM stream → WebSocket)</td></tr>
+          <tr><td>web_socket_channel</td><td>^3.0.2</td><td>WebSocket client — real-time backend connection</td></tr>
+          <tr><td>just_audio</td><td>^0.10.0</td><td>Audio playback (word audio, recitation CDN)</td></tr>
+          <tr><td>flutter_tts</td><td>^4.2.2</td><td>Text-to-speech for Urdu Tajweed feedback</td></tr>
+          <tr><td>fl_chart</td><td>^0.69.0</td><td>Progress accuracy charts (line/bar charts)</td></tr>
+          <tr><td>shared_preferences</td><td>^2.3.2</td><td>Local key-value storage</td></tr>
+          <tr><td>permission_handler</td><td>^12.0.1</td><td>Runtime microphone + audio permissions</td></tr>
+          <tr><td>flutter_svg</td><td>^2.2.3</td><td>SVG icon rendering</td></tr>
+          <tr><td>google_fonts</td><td>^6.3.2</td><td>Custom typography</td></tr>
+          <tr><td>curved_navigation_bar</td><td>^1.0.6</td><td>Bottom navigation bar</td></tr>
+          <tr><td>flutter_staggered_grid_view</td><td>^0.7.0</td><td>Grid layouts for home screen</td></tr>
+          <tr><td>flutter_launcher_icons</td><td>^0.14.4</td><td>App icon generation</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#fef3c7">✨</div>
+      <div>
+        <h2>App Features</h2>
+        <p>All major features of the Al-Qari mobile app</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🎤 Recitation Practice</h3>
+        <p>Select any surah/ayah (or full surah mode), record your recitation, and receive
+        AI-powered feedback with word-by-word accuracy scores, Tajweed rule checking,
+        and color-coded word annotations.</p>
+      </div>
+      <div class="card">
+        <h3>📊 Progress Tracking</h3>
+        <p>Every recitation session is saved to Firestore. The progress screen shows
+        accuracy over time with interactive charts (fl_chart), session history, and rolling
+        statistics (total sessions, average accuracy, total minutes).</p>
+      </div>
+      <div class="card">
+        <h3>📚 Quran Reader</h3>
+        <p>Full Quran with authentic Uthmani script from quran_library. Supports word-level
+        audio playback (tap any word to hear it), Tajweed color highlighting, and smooth
+        navigation by surah and page.</p>
+      </div>
+      <div class="card">
+        <h3>📖 Learn Module</h3>
+        <p>Educational content covering Tajweed rules (with bilingual Urdu/English explanations),
+        Qaida (Arabic alphabet basics for beginners), and Qirat (advanced recitation styles).</p>
+      </div>
+      <div class="card">
+        <h3>🔐 Authentication</h3>
+        <p>Email/password signup and login, plus one-tap Google Sign-In via Firebase Auth.
+        User profiles are linked to Firestore for cross-device progress sync.</p>
+      </div>
+      <div class="card">
+        <h3>🔊 Urdu TTS Feedback</h3>
+        <p>Tajweed error messages are read aloud in Urdu using flutter_tts, making feedback
+        accessible to users who are more comfortable with spoken Urdu than reading text.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENS -->
+  <section class="section" id="screens">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#ede9fe">🖼️</div>
+      <div>
+        <h2>App Screens</h2>
+        <p>All screens and their purpose</p>
+      </div>
+    </div>
+    <div class="screen-row">
+      <div class="screen-card">
+        <div class="sc-icon">🌟</div>
+        <div class="sc-name">Splash Screen</div>
+        <div class="sc-desc">Animated brand intro, Firebase auth check</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">🎉</div>
+        <div class="sc-name">Onboarding</div>
+        <div class="sc-desc">First-run feature walkthrough</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">🔐</div>
+        <div class="sc-name">Login / Register</div>
+        <div class="sc-desc">Email &amp; Google Sign-In</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">🏠</div>
+        <div class="sc-name">Home</div>
+        <div class="sc-desc">Feature navigation grid</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">⚙️</div>
+        <div class="sc-name">Recitation Setup</div>
+        <div class="sc-desc">Select surah, ayah or full surah mode</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">🎙️</div>
+        <div class="sc-name">Recitation Active</div>
+        <div class="sc-desc">Live recording + partial feedback display</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">📊</div>
+        <div class="sc-name">Recitation Result</div>
+        <div class="sc-desc">Score, word comparison, Tajweed errors, TTS</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">📖</div>
+        <div class="sc-name">Quran Reader</div>
+        <div class="sc-desc">Full Quran, word audio, Tajweed colors</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">📚</div>
+        <div class="sc-name">Learn</div>
+        <div class="sc-desc">Tajweed guide, Qaida, Qirat</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">📈</div>
+        <div class="sc-name">Progress</div>
+        <div class="sc-desc">Charts, session history, stats</div>
+      </div>
+      <div class="screen-card">
+        <div class="sc-icon">👤</div>
+        <div class="sc-name">Profile</div>
+        <div class="sc-desc">User info, settings, logout</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATE MANAGEMENT -->
+  <section class="section" id="state">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#dcfce7">🔄</div>
+      <div>
+        <h2>State Management</h2>
+        <p>GetX reactive state, controllers, and navigation</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>GetX Architecture</h3>
+      <p>Al-Qari uses <strong>GetX</strong> for state management, dependency injection, and routing.
+      Each feature has a dedicated <code>Controller</code> extending <code>GetxController</code>,
+      with reactive (<code>Rx</code>) observables for UI state.</p>
+      <div class="code-block" style="margin-top:14px"><span class="cmt">// Example: RecitationController observable state</span>
+<span class="kw">final</span> Rx&lt;RecitationState&gt; state = RecitationState.idle.obs;
+<span class="kw">final</span> RxString partialText = <span class="str">''</span>.obs;
+<span class="kw">final</span> RxInt selectedSurah = <span class="num">1</span>.obs;
+<span class="kw">final</span> RxInt selectedAyah = <span class="num">0</span>.obs;   <span class="cmt">// 0 = Full Surah mode</span>
+<span class="kw">final</span> Rx&lt;RecitationResultModel?&gt; result = Rx(<span class="kw">null</span>).obs;</div>
+      <div style="margin-top:16px">
+        <p style="font-size:0.9rem; color:var(--text-sub)"><strong>RecitationState enum:</strong></p>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px">
+          <span class="badge badge-blue">idle</span>
+          <span class="badge badge-orange">recording</span>
+          <span class="badge badge-purple">loading</span>
+          <span class="badge badge-green">done</span>
+          <span class="badge badge-red">error</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Named Routes</h3>
+        <div class="code-block" style="font-size:0.78rem"><span class="str">AppRoutes.splash</span>         → /splash
+<span class="str">AppRoutes.onboarding</span>     → /onboarding
+<span class="str">AppRoutes.login</span>          → /login
+<span class="str">AppRoutes.nav</span>            → /nav (bottom nav)
+<span class="str">AppRoutes.recitationSetup</span> → /recitation/setup
+<span class="str">AppRoutes.recitationActive</span> → /recitation/active
+<span class="str">AppRoutes.recitationResult</span> → /recitation/result</div>
+      </div>
+      <div class="card">
+        <h3>Controllers Overview</h3>
+        <ul style="font-size:0.88rem; color:var(--text-sub); line-height:2; padding-left:18px">
+          <li><strong>BottomNavController</strong> — tab index</li>
+          <li><strong>RecitationController</strong> — recording, WS, AI feedback</li>
+          <li><strong>ProgressController</strong> — Firestore stats + charts</li>
+          <li><strong>AuthController</strong> — Firebase login/logout</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE SERVICES -->
+  <section class="section" id="services">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#fce7f3">🔧</div>
+      <div>
+        <h2>Core Services</h2>
+        <p>Shared services used across the Flutter app</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>📈 ProgressService</h3>
+        <p>Saves recitation sessions to Firestore under <code>users/{uid}/progressSessions</code>.
+        Updates rolling stats (total sessions, average accuracy, total duration) in
+        <code>users/{uid}/progress/stats</code>. Handles unauthenticated users gracefully.</p>
+      </div>
+      <div class="card">
+        <h3>🔊 QuranWordAudioService</h3>
+        <p>Plays individual word audio clips from the CDN using the <code>just_audio</code> package.
+        Used in the Quran reader for tap-to-hear word pronunciation.</p>
+      </div>
+      <div class="card">
+        <h3>💾 SessionService</h3>
+        <p>Manages local session state using <code>SharedPreferences</code>. Tracks the current
+        user's reading/recitation session data that should persist across app restarts.</p>
+      </div>
+      <div class="card">
+        <h3>🗣️ UrduTtsService</h3>
+        <p>Wraps <code>flutter_tts</code> to speak Tajweed error messages aloud in Urdu.
+        Configured for Urdu language and appropriate speech rate/pitch for clarity.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SCHEMAS -->
+  <section class="section" id="schemas">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#dbeafe">📋</div>
+      <div>
+        <h2>Data Schemas</h2>
+        <p>Pydantic models for all API request and response objects</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Schema</th><th>Type</th><th>Description</th><th>Key Fields</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AyahReference</td>
+            <td><span class="badge badge-blue">Response</span></td>
+            <td>Full data for one ayah</td>
+            <td>surah, ayah, arabic_text, tajweed_rules, audio_url</td>
+          </tr>
+          <tr>
+            <td>TajweedRule</td>
+            <td><span class="badge badge-purple">Nested</span></td>
+            <td>One Tajweed rule annotation</td>
+            <td>type, position, letter, word, madd_type, duration_expected</td>
+          </tr>
+          <tr>
+            <td>SurahInfo</td>
+            <td><span class="badge badge-blue">Response</span></td>
+            <td>Surah metadata</td>
+            <td>number, name_arabic, name_english, total_ayahs, revelation</td>
+          </tr>
+          <tr>
+            <td>TranscriptionResponse</td>
+            <td><span class="badge badge-blue">Response</span></td>
+            <td>ASR result with comparison</td>
+            <td>transcription, confidence, match_percentage, word_comparison</td>
+          </tr>
+          <tr>
+            <td>WordComparison</td>
+            <td><span class="badge badge-purple">Nested</span></td>
+            <td>One word comparison entry</td>
+            <td>position, reference, recited, match (bool), similarity (0–100)</td>
+          </tr>
+          <tr>
+            <td>TajweedError</td>
+            <td><span class="badge badge-orange">Error</span></td>
+            <td>One detected Tajweed error</td>
+            <td>rule_type, word, error_message_en, error_message_ur, measured_value</td>
+          </tr>
+          <tr>
+            <td>TajweedCheckResponse</td>
+            <td><span class="badge badge-blue">Response</span></td>
+            <td>Full Tajweed check result</td>
+            <td>overall_accuracy, total_errors, errors[], tajweed_rules[]</td>
+          </tr>
+          <tr>
+            <td>WordAnnotation</td>
+            <td><span class="badge badge-purple">Nested</span></td>
+            <td>Color-annotated word</td>
+            <td>word, color, rules[]</td>
+          </tr>
+          <tr>
+            <td>EvaluatedWordAnnotation</td>
+            <td><span class="badge badge-purple">Nested</span></td>
+            <td>Word annotation with eval status</td>
+            <td>word, color, status (correct/error/missing), error_detail</td>
+          </tr>
+          <tr>
+            <td>VisualizerResponse</td>
+            <td><span class="badge badge-blue">Response</span></td>
+            <td>Full ayah annotation</td>
+            <td>words[], surah, ayah, arabic_text</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- DEPLOYMENT -->
+  <section class="section" id="deployment">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#fef3c7">🚀</div>
+      <div>
+        <h2>Deployment</h2>
+        <p>Server setup and production configuration</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🖥️ Backend Server</h3>
+        <p>Deployed on <strong>AWS EC2</strong> at <code>13.63.216.254:8000</code>.</p>
+        <div class="code-block" style="margin-top:12px; font-size:0.78rem"><span class="cmt"># Start with Gunicorn + Uvicorn workers</span>
+gunicorn main:app \
+  --workers 4 \
+  --worker-class uvicorn.workers.UvicornWorker \
+  --bind 0.0.0.0:8000
+
+<span class="cmt"># Dev mode</span>
+uvicorn main:app --reload --port 8000
+
+<span class="cmt"># API Docs available at:</span>
+http://&lt;host&gt;:8000/docs     <span class="cmt"># Swagger UI</span>
+http://&lt;host&gt;:8000/redoc    <span class="cmt"># ReDoc</span></div>
+      </div>
+      <div class="card">
+        <h3>📱 Flutter App Build</h3>
+        <p>The WebSocket URL is configured directly in <code>recitation_controller.dart</code>.</p>
+        <div class="code-block" style="margin-top:12px; font-size:0.78rem"><span class="cmt">// Current production endpoint</span>
+<span class="kw">const</span> String _kWsUrl =
+  <span class="str">'ws://13.63.216.254:8000/ws/recite'</span>;
+
+<span class="cmt">// Build for Android</span>
+flutter build apk --release
+
+<span class="cmt">// Build for iOS</span>
+flutter build ios --release</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>⚙️ Model Loading Strategy</h3>
+      <p>AI models are loaded <strong>once at server startup</strong> using FastAPI's lifespan event and
+      cached in memory as module-level singletons. This avoids reloading the 74M-parameter Whisper model
+      on every request. The first API call may take a few seconds as models download from Hugging Face Hub
+      on a fresh deployment.</p>
+      <div class="code-block" style="margin-top:12px"><span class="cmt"># In main.py — models cached at startup</span>
+<span class="kw">async with</span> lifespan(app):
+    _ = get_transcription_service()  <span class="cmt"># Loads + caches Whisper</span>
+    _ = get_tajweed_checker()        <span class="cmt"># Loads + caches TajweedChecker</span>
+</div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- GLOSSARY -->
+  <section class="section" id="glossary">
+    <div class="section-title">
+      <div class="icon-circle" style="background:#fce7f3">📖</div>
+      <div>
+        <h2>Glossary</h2>
+        <p>Key terms used in this documentation</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Term</th><th>Arabic</th><th>Definition</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Tajweed</td><td style="font-family:serif;font-size:1.1rem">تجويد</td><td>The rules of correct Quranic recitation — pronunciation, rhythm, and articulation.</td></tr>
+          <tr><td>Madd</td><td style="font-family:serif;font-size:1.1rem">مد</td><td>Vowel elongation rule. Letters must be held for a specific number of harakaat (counts). Types: Asli (2), Wajib (4-5), Lazim (6).</td></tr>
+          <tr><td>Qalqalah</td><td style="font-family:serif;font-size:1.1rem">قلقلة</td><td>Echo/bouncing sound produced on the letters ق ط ب ج د when they carry sukoon. Detected by an intensity spike in the waveform.</td></tr>
+          <tr><td>Ghunnah</td><td style="font-family:serif;font-size:1.1rem">غنة</td><td>Nasal sound applied to ن and م when followed by specific letters. Detected by nasal frequency energy in the audio spectrum.</td></tr>
+          <tr><td>Waqf</td><td style="font-family:serif;font-size:1.1rem">وقف</td><td>Intentional pause between ayahs in Quranic recitation (0.5–2 seconds). Al-Qari's VAD is configured to tolerate these pauses.</td></tr>
+          <tr><td>Harakaat</td><td style="font-family:serif;font-size:1.1rem">حركات</td><td>Unit of vowel duration in Tajweed. One harakah ≈ one beat of the finger.</td></tr>
+          <tr><td>Ayah</td><td style="font-family:serif;font-size:1.1rem">آية</td><td>A verse of the Quran.</td></tr>
+          <tr><td>Surah</td><td style="font-family:serif;font-size:1.1rem">سورة</td><td>A chapter of the Quran. There are 114 surahs.</td></tr>
+          <tr><td>ASR</td><td>—</td><td>Automatic Speech Recognition — AI that converts audio to text.</td></tr>
+          <tr><td>VAD</td><td>—</td><td>Voice Activity Detection — filters silence from audio before transcription.</td></tr>
+          <tr><td>CTranslate2</td><td>—</td><td>OpenNMT's optimized inference engine used by Faster-Whisper for INT8/FP16 quantized inference.</td></tr>
+          <tr><td>Hugging Face Hub</td><td>—</td><td>ML model repository where the Quranic Whisper model is hosted and downloaded from.</td></tr>
+          <tr><td>GetX</td><td>—</td><td>Flutter framework for state management, routing, and dependency injection.</td></tr>
+          <tr><td>Firestore</td><td>—</td><td>Firebase's NoSQL cloud database used to store user progress and session history.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p style="font-size:1rem; margin-bottom:8px"><strong>Al-Qari — القاري</strong></p>
+    <p>AI-Powered Quranic Recitation Learning Platform · Version 1.0.0</p>
+    <p style="margin-top:8px">
+      Backend: <strong>FastAPI + Faster-Whisper (OdyAsh/faster-whisper-base-ar-quran) + LibROSA</strong> ·
+      Frontend: <strong>Flutter + GetX + Firebase</strong>
+    </p>
+    <p style="margin-top:8px; opacity:0.5; font-size:0.75rem">
+      Documentation generated on 25 May 2026
+    </p>
+  </div>
+
+</div>
+
+<!-- Sidebar active link highlighting on scroll -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar a[href^="#"]');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

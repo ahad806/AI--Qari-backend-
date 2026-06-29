@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "827310573080",
+    "project_id": "al-qari-2567f",
+    "storage_bucket": "al-qari-2567f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827310573080:android:cca8760464b9298b2a256d",
+        "android_client_info": {
+          "package_name": "com.example.alqari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827310573080-ou7mv1pc7c7s8m3u4d0gs0uktv5soqkt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alqari",
+            "certificate_hash": "4d6497b414eb978ae4bf3764b5c4adbb1fd53019"
+          }
+        },
+        {
+          "client_id": "827310573080-8govvgvju6eabisuivio8pu1vtvd6jid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvs4BkHyhP2Z-TQQ2zGWUMMI-QlEPx_ZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827310573080-8govvgvju6eabisuivio8pu1vtvd6jid.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "827310573080-48h7c680a1e1vchoqtrjhau4m98iecnp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.alqari"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
