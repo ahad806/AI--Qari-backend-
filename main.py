@@ -5,6 +5,8 @@ FastAPI server for Quranic recitation transcription and Tajweed evaluation
 """
 Developed by: zainab-batool26
 """
+# # Version: 1.0.0
+# # Maintainer: zainab-batool26
 
 import sys
 import os
