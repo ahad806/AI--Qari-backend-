@@ -2,6 +2,9 @@
 AI Qaari Backend API
 FastAPI server for Quranic recitation transcription and Tajweed evaluation
 """
+"""
+Developed by: zainab-batool26
+"""
 
 import sys
 import os
