@@ -11,7 +11,9 @@ A new Flutter project.
 - Audio transcription with Faster-Whisper
 - Color-coded visual feedback
 - Native language support (Urdu)
-
+# "## 📌 Project Status"
+# "- Active development by zainab-batool26"
+# "- Last updated: June 2026"
 ## Getting Started
 
 This project is a starting point for a Flutter application.
