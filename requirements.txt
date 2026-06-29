@@ -1,0 +1,27 @@
+# FastAPI framework
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.12
+
+# ML/AI models
+transformers==4.47.0
+torch==2.6.0
+torchaudio==2.6.0
+faster-whisper==1.1.0  # Optimized Whisper for Quranic transcription
+pydub==0.25.1  # Audio format conversion
+
+# Audio processing
+librosa==0.10.2
+soundfile==0.12.1
+scipy==1.14.1
+numpy==1.26.4
+# NOTE: praat-parselmouth REMOVED - requires Visual Studio C++ Build Tools
+# Tajweed phonetic analysis will use librosa fallback methods instead
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# Optional: For deployment
+gunicorn==23.0.0

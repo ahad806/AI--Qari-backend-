@@ -1,0 +1,342 @@
+{
+  "1:1": [
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ا",
+      "word": "ٱلرَّحۡمَـٰنِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الرحمٰن میں الف ممدودہ پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on dagger alif in Ar-Rahman - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 3,
+      "letter": "ی",
+      "word": "ٱلرَّحِیمِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الرحیم میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Ar-Raheem - 2 harakaat"
+    }
+  ],
+  "1:2": [
+    {
+      "type": "MADD",
+      "position": 3,
+      "letter": "ا",
+      "word": "ٱلۡعَـٰلَمِینَ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "العالمین میں الف ممدودہ پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on dagger alif in Al-Alameen - 2 harakaat"
+    }
+  ],
+  "1:3": [
+    {
+      "type": "MADD",
+      "position": 0,
+      "letter": "ا",
+      "word": "ٱلرَّحۡمَـٰنِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الرحمٰن میں الف ممدودہ پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on dagger alif in Ar-Rahman - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 1,
+      "letter": "ی",
+      "word": "ٱلرَّحِیمِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الرحیم میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Ar-Raheem - 2 harakaat"
+    }
+  ],
+  "1:4": [
+    {
+      "type": "MADD",
+      "position": 0,
+      "letter": "ا",
+      "word": "مَـٰلِكِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "مالک میں الف ممدودہ پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on dagger alif in Maalik - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ی",
+      "word": "ٱلدِّینِ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الدین میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Ad-Deen - 2 harakaat"
+    }
+  ],
+  "1:5": [
+    {
+      "type": "MADD",
+      "position": 3,
+      "letter": "ی",
+      "word": "نَسۡتَعِینُ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "نستعین میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Nastaeen - 2 harakaat"
+    }
+  ],
+  "1:6": [
+    {
+      "type": "MADD",
+      "position": 0,
+      "letter": "ا",
+      "word": "ٱهۡدِنَا",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "اهدنا میں الف پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on alif in Ihdina - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 3,
+      "letter": "ی",
+      "word": "ٱلۡمُسۡتَقِیمَ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "المستقیم میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Al-Mustaqeem - 2 harakaat"
+    }
+  ],
+  "1:7": [
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ی",
+      "word": "ٱلَّذِینَ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "الذین میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Alladhina - 2 harakaat"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 6,
+      "letter": "ب",
+      "word": "ٱلۡمَغۡضُوبِ",
+      "description_ur": "المغضوب میں باء پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on ba in Al-Maghdoob (at waqf)"
+    },
+    {
+      "type": "MADD",
+      "position": 8,
+      "letter": "ا",
+      "word": "وَلَا",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "ولا میں الف پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on alif in Wa-laa - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 9,
+      "letter": "ا",
+      "word": "ٱلضَّاۤلِّینَ",
+      "madd_type": "madd_lazim",
+      "duration_expected": 1.5,
+      "description_ur": "الضآلین میں مد لازم کلمی مثقل - 6 حرکت - سب سے اہم مد!",
+      "description_en": "Madd Lazim Kalimi Muthaqqal in Ad-Daalleen - 6 harakaat - alif before lam with shaddah"
+    }
+  ],
+  "112:1": [
+    {
+      "type": "QALQALAH",
+      "position": 3,
+      "letter": "د",
+      "word": "أَحَدٌ",
+      "description_ur": "احد میں دال پر قلقلہ کبریٰ (وقف پر تنوین ساقط)",
+      "description_en": "Qalqalah Kubra on dal in Ahad (tanween drops at waqf, dal gets sukoon)"
+    }
+  ],
+  "112:2": [
+    {
+      "type": "QALQALAH",
+      "position": 1,
+      "letter": "د",
+      "word": "ٱلصَّمَدُ",
+      "description_ur": "الصمد میں دال پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on dal in As-Samad (at waqf)"
+    }
+  ],
+  "112:3": [
+    {
+      "type": "QALQALAH",
+      "position": 1,
+      "letter": "د",
+      "word": "یَلِدۡ",
+      "description_ur": "یلد میں دال ساکن پر قلقلہ",
+      "description_en": "Qalqalah on dal with sukoon in Yalid"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 3,
+      "letter": "د",
+      "word": "یُولَدۡ",
+      "description_ur": "یولد میں دال ساکن پر قلقلہ",
+      "description_en": "Qalqalah on dal with sukoon in Yoolad"
+    }
+  ],
+  "112:4": [
+    {
+      "type": "QALQALAH",
+      "position": 4,
+      "letter": "د",
+      "word": "أَحَدُۢ",
+      "description_ur": "احد میں دال پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on dal in Ahad (at waqf)"
+    }
+  ],
+  "113:1": [
+    {
+      "type": "MADD",
+      "position": 1,
+      "letter": "و",
+      "word": "أَعُوذُ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "اعوذ میں واو پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on waw in A'oodhu - 2 harakaat"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 3,
+      "letter": "ق",
+      "word": "ٱلۡفَلَقِ",
+      "description_ur": "الفلق میں قاف پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on qaf in Al-Falaq (at waqf)"
+    }
+  ],
+  "113:2": [
+    {
+      "type": "GHUNNAH",
+      "position": 0,
+      "letter": "ن",
+      "word": "مِن",
+      "description_ur": "من میں نون ساکن شین سے پہلے - اخفاء مع غنہ - 2 حرکت",
+      "description_en": "Ikhfa with Ghunnah - noon sakinah before shin in min sharri - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ا",
+      "word": "مَا",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "ما میں الف پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on alif in Maa - 2 harakaat"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 3,
+      "letter": "ق",
+      "word": "خَلَقَ",
+      "description_ur": "خلق میں قاف پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on qaf in Khalaqa (at waqf)"
+    }
+  ],
+  "113:3": [
+    {
+      "type": "GHUNNAH",
+      "position": 0,
+      "letter": "ن",
+      "word": "وَمِن",
+      "description_ur": "ومن میں نون ساکن شین سے پہلے - اخفاء مع غنہ - 2 حرکت",
+      "description_en": "Ikhfa with Ghunnah - noon sakinah before shin in wamin sharri - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ا",
+      "word": "غَاسِقٍ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "غاسق میں الف پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on alif in Ghaasiq - 2 harakaat"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 4,
+      "letter": "ب",
+      "word": "وَقَبَ",
+      "description_ur": "وقب میں باء پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on ba in Waqab (at waqf)"
+    }
+  ],
+  "113:4": [
+    {
+      "type": "GHUNNAH",
+      "position": 0,
+      "letter": "ن",
+      "word": "وَمِن",
+      "description_ur": "ومن میں نون ساکن شین سے پہلے - اخفاء مع غنہ - 2 حرکت",
+      "description_en": "Ikhfa with Ghunnah - noon sakinah before shin - 2 harakaat"
+    },
+    {
+      "type": "GHUNNAH",
+      "position": 2,
+      "letter": "ن",
+      "word": "ٱلنَّفَّـٰثَـٰتِ",
+      "description_ur": "النفاثات میں نون مشدد پر غنہ - 2 حرکت",
+      "description_en": "Ghunnah on noon with shaddah in An-Naffathaat - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 3,
+      "letter": "ی",
+      "word": "فِی",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "فی میں یاء پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on ya in Fee - 2 harakaat"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 4,
+      "letter": "د",
+      "word": "ٱلۡعُقَدِ",
+      "description_ur": "العقد میں دال پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on dal in Al-Uqad (at waqf)"
+    }
+  ],
+  "113:5": [
+    {
+      "type": "GHUNNAH",
+      "position": 0,
+      "letter": "ن",
+      "word": "وَمِن",
+      "description_ur": "ومن میں نون ساکن شین سے پہلے - اخفاء مع غنہ - 2 حرکت",
+      "description_en": "Ikhfa with Ghunnah - noon sakinah before shin - 2 harakaat"
+    },
+    {
+      "type": "MADD",
+      "position": 2,
+      "letter": "ا",
+      "word": "حَاسِدٍ",
+      "madd_type": "madd_asli",
+      "duration_expected": 0.5,
+      "description_ur": "حاسد میں الف پر مد اصلی - 2 حرکت",
+      "description_en": "Madd Asli on alif in Haasid - 2 harakaat"
+    },
+    {
+      "type": "QALQALAH",
+      "position": 4,
+      "letter": "د",
+      "word": "حَسَدَ",
+      "description_ur": "حسد میں دال پر قلقلہ کبریٰ (وقف پر)",
+      "description_en": "Qalqalah Kubra on dal in Hasad (at waqf)"
+    }
+  ]
+}
