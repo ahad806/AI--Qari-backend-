@@ -1,6 +1,16 @@
 # al_qari
 
 A new Flutter project.
+## 👩‍💻 Contributors
+
+- **zainab-batool26** - Active Developer
+
+## 🚀 Features
+
+- Real-time Tajweed correction
+- Audio transcription with Faster-Whisper
+- Color-coded visual feedback
+- Native language support (Urdu)
 
 ## Getting Started
 
