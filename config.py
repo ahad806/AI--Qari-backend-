@@ -1,6 +1,8 @@
 """
 Configuration settings for AI Qaari API
-"""
+Maintained by: zainab-batool26
+# """
+
 
 import os
 from pathlib import Path
